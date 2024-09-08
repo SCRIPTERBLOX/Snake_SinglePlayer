@@ -15,8 +15,8 @@ public class Main extends JFrame implements KeyListener {
     int[][] snake = defSnake;
 
     int[] food;
-    int width = 1000;
-    int height = 700;
+    public static int width = 1000;
+    public static int height = 700;
     private String dir = "UP";
     private String nextDir = "UP";
 
@@ -159,10 +159,10 @@ public class Main extends JFrame implements KeyListener {
 
     public static int[] getRPos() {
         int[] pos;
-        int maxX = 1000 / 25-1;
-        int maxY = 700 / 25-1;
-        int posX = (int) (Math.random() * (maxX + 1));
-        int posY = (int) (Math.random() * (maxY + 1));
+        int maxX = (width / 25)-1;
+        int maxY = (height / 25)-1;
+        int posX = (int) (Math.random() * maxX);
+        int posY = (int) (Math.random() * maxY);
         pos = new int[]{posX * 25, posY * 25};
         return pos;
     }
