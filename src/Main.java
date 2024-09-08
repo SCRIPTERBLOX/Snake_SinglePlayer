@@ -36,7 +36,7 @@ public class Main extends JFrame implements KeyListener {
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
 
-        Timer timer = new Timer(100, new ActionListener() {
+        Timer timer = new Timer(750, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Spawn the food if not already present
@@ -135,16 +135,16 @@ public class Main extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
                 if (!dir.equals("DOWN")) nextDir = "UP";
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
                 if (!dir.equals("UP")) nextDir = "DOWN";
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
                 if (!dir.equals("LEFT")) nextDir = "RIGHT";
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 if (!dir.equals("RIGHT")) nextDir = "LEFT";
                 break;
         }
