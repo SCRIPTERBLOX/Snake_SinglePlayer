@@ -5,7 +5,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 
 public class Main extends JFrame implements KeyListener {
     private BufferedImage image;
@@ -20,7 +23,7 @@ public class Main extends JFrame implements KeyListener {
     private String dir = "UP";
     private String nextDir = "UP";
 
-    public Main() {
+    public Main(int speed, String name) {
         super("Snake");
         setSize(width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,9 +39,11 @@ public class Main extends JFrame implements KeyListener {
         panel.setBackground(Color.DARK_GRAY);
         add(panel);
 
-        Timer timer = new Timer(750, new ActionListener() {
+        Timer timer = new Timer(speed, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+
                 // Spawn the food if not already present
                 if (food == null) {
                     do {
@@ -88,6 +93,7 @@ public class Main extends JFrame implements KeyListener {
                 for (int i = 1; i < snake.length; i++) {
                     if (head[0] == snake[i][0] && head[1] == snake[i][1]) {
                         System.out.println("GAME OVER");
+                        FileReadWriter.write(name+".txt", "C:\\Users\\scrip\\Documents\\Games\\Snake_SinglePlayer\\src\\Scores", String.valueOf(snake.length));
                         snake = defSnake;
                         dir = "UP";
                         break;
@@ -97,6 +103,7 @@ public class Main extends JFrame implements KeyListener {
                 // Out-of-bounds detection
                 if (head[0] >= width || head[1] >= height || head[0] < 0 || head[1] < 0) {
                     System.out.println("GAME OVER");
+                    FileReadWriter.write(name, "C:\\Users\\scrip\\Documents\\Games\\Snake_SinglePlayer\\src\\Scores", String.valueOf(snake.length));
                     snake = defSnake;
                     dir = "UP";
                 }
@@ -154,7 +161,23 @@ public class Main extends JFrame implements KeyListener {
     public void keyReleased(KeyEvent e) {}
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(Main::new);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String name = now.format(formatter);
+        int speed = 500; // Default speed
+        if (args.length > 0) {
+            try {
+                speed = Integer.parseInt(args[0]);
+                if (speed <= 0) {
+                    System.err.println("Speed must be a positive integer.");
+                    System.exit(1);
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid speed argument. Using default value.");
+            }
+        }
+        int finalSpeed = speed;
+        SwingUtilities.invokeLater(() -> new Main(finalSpeed, name));
     }
 
     public static int[] getRPos() {
